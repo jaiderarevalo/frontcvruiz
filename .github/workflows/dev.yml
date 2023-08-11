@@ -34,7 +34,7 @@ jobs:
         run: npm install -f
 
       - name: Building project 🔧
-        run: npm run build-dev
+        run: npm run build
 
       - name: Upload dist directory as artifact
         uses: actions/upload-artifact@v2
