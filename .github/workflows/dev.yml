@@ -52,7 +52,7 @@ jobs:
     steps:
       # Descargar el artifact
       - name: Download dist directory
-        uses: actions/download- @v2
+        uses: actions/download-artifact@v2
         with:
           name: dist-artifact
           path: dist/
