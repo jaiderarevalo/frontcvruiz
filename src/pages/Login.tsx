@@ -1,33 +1,40 @@
-
 import { useForm } from "react-hook-form";
-import { loginInterface } from "../interfaces/interfac";
-
+import { login } from "../interfaces/interfac";
+import { usePostLoginContext } from "../context/LoginContext";
+//import { useAuthContext } from "../context/AuthContext";
 function Login() {
-  const { register, handleSubmit } = useForm<loginInterface>();
-  const onSubmit = (data:loginInterface) => {
-    console.log(data);
+    const { userLogin } = usePostLoginContext();
+  // const{token}= useAuthContext()
+   //console.log(token);
+   
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<login>();
+  const onsubmit = (data: login) => { 
+    userLogin(data);
   };
+
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <article>
-          <h1>Login</h1>
-        </article>
-        <article>
-          <label>Email</label>
-          <input type="email" {...register("email", { required: true })} />
-        </article>
-        <article>
-          <label>Password</label>
+      <form onSubmit={handleSubmit(onsubmit)}>
+        <section>
+          <label>Usuario</label>
+          <input type="text" {...register("username", { required: true })} />
+          {errors.username && <span>campo requerido</span>}
+        </section>
+        <section>
+          <label>password</label>
           <input
             type="password"
             {...register("password", { required: true })}
           />
-        </article>
-        <button> enviar</button>
+          {errors.password && <span>campo requerido</span>}
+        </section>
+        <button>Enviar</button>
       </form>
     </div>
-    
   );
 }
 
