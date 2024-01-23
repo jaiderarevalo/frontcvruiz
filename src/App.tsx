@@ -1,22 +1,19 @@
 import "./App.css";
-import FormProyect from "./pages/FormProyect";
-import FormRegister from "./pages/FormRegister";
-import Header from "./pages/Header";
-import Login from "./pages/Login";
-import Proyects from "./pages/Proyects";
-import Skills from "./pages/skills";
-
+import AuthVerify from "./providers/AuthVerify";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
+import Router from "./Routes/Router";
+import store, { persistor } from "./Store/Slices";
 
 function App() {
-
   return (
-    <div>
-      <Header />
-      <FormRegister/>
-      <FormProyect />
-      <Proyects />
-      <Skills />
-    </div>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <AuthVerify>
+          <Router />
+        </AuthVerify>
+      </PersistGate>
+    </Provider>
   );
 }
 
