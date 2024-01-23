@@ -17,7 +17,8 @@ export interface imagenes {
 }
 
 export interface login {
-  username: string;
+  id?: string;
+  email: string;
   password: string;
 }
 export interface register {
@@ -25,4 +26,5 @@ export interface register {
   email: string;
   password: string;
   confirmPassword: string;
+  role: string;
 }

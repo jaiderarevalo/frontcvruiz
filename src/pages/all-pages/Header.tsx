@@ -1,6 +1,7 @@
-import foto from "../images/fotoDeveloper.jpeg";
-import space from "../images/star.jpg";
-import logo from "../images/logoo.png";
+import foto from "../../images/fotoDeveloper.jpeg";
+import space from "../../images/star.jpg";
+import logo from "../../images/logoo.png";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -8,9 +9,10 @@ function Header() {
       <header
         className="flex w-full h-96 bg-cover rounded-t-lg"
         style={{ backgroundImage: `url(${space})` }}
-      ><article className="p-10">
-         <img className="w-44 h-32 rounded-full"  src={logo} />
-      </article>
+      >
+        <article className="p-10">
+          <img className="w-44 h-32 rounded-full" src={logo} />
+        </article>
         <article className="h-96 flex items-center m-auto">
           <img
             className="rounded-full h-80 w-72"
@@ -28,6 +30,7 @@ function Header() {
             excelencia técnica."
           </p>
         </article>
+        <Link to="/login">ing</Link>
       </header>
     </div>
   );

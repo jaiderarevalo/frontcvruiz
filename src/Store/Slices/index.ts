@@ -1,13 +1,14 @@
 import { combineReducers, configureStore, AnyAction } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
-import thunk, { ThunkDispatch } from "redux-thunk";
+import  { ThunkDispatch, thunk } from "redux-thunk";
 import { useDispatch } from "react-redux";
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import authSlice, { setLogout } from "./auth.slice";
 import { Axios } from "../../services/axios";
+import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: "root",
-  storage: localStorage,
+  storage: storage,
 };
 
 const rootReducer = combineReducers({

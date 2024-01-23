@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "../actions/auth.actions";
+import { LoginUser, getUser, registerUser } from "../actions/auth.actions";
 import { handlePending } from "../actions/base.actions";
 
 export interface UserLogin {
   email: string;
-  password: string;
+  role: string;
 }
 export interface UserEmail {
   email: string;
@@ -15,7 +15,7 @@ export interface UserRegister {
   name: string;
   password: string;
   gender: string;
-  confirmpassword: string;
+  confirmPassword: string;
 }
 export interface RegisterState {
   user: UserLogin | null;
@@ -40,6 +40,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setLogin: (state, { payload }: any) => {
+      console.log("soy el payload de login ", payload);
       state.loading = false;
       state.user = payload.user;
       state.token = payload.accessToken;
@@ -66,19 +67,30 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
       })
-    //   .addCase(loginUser.pending, handlePending)
-    //   .addCase(loginUser.fulfilled, (state, { payload }: any) => {
-    //     state.loading = false;
-    //     state.user = payload.user;
-    //     state.token = payload.accessToken;
-    //     state.isLogin = true;
-    //     AsyncStorage.setItem("token", payload.accessToken);
-    //   })
-    //   .addCase(loginUser.rejected, (state) => {
-    //     state.loading = false;
-    //     state.isLogin = false;
-    //     state.alreadyEmail = false;
-    //   })
+      .addCase(getUser.pending, handlePending)
+      .addCase(getUser.fulfilled, (state, { payload }: any) => {
+        state.loading = false;
+        state.user = payload.user;
+      })
+      .addCase(getUser.rejected, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.token = null;
+      })
+      .addCase(LoginUser.pending, handlePending)
+      .addCase(LoginUser.fulfilled, (state, { payload }: any) => {
+        console.log("payload de user login", payload);
+        state.loading = false;
+        state.user = { email: payload.email, role: payload.role };
+        state.token = payload.accessToken;
+        state.isLogin = true;
+        localStorage.setItem("token", payload.accessToken);
+      })
+      .addCase(LoginUser.rejected, (state) => {
+        state.loading = false;
+        state.isLogin = false;
+        state.alreadyEmail = false;
+      });
     //   .addCase(validateEmail.pending, handlePending)
     //   .addCase(validateEmail.fulfilled, (state) => {
     //     state.loading = false;
