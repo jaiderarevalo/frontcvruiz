@@ -8,7 +8,7 @@ const LayoutPrivate = () => {
     <div>
       <div className="flex flex-col flex-1 w-full">
         <Main>
-          <div className="pt-10">
+          <div className="mt-10">
             <Suspense fallback={<ThemedSuspense />}>
               <Outlet />
             </Suspense>
