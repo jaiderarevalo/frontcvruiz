@@ -1,5 +1,4 @@
 import { FunctionComponent } from "react";
-import Pageadmin from "../pages/page-admin/Pageadmin";
 import LayoutPublic from "../layouts/Layout.public";
 import LayoutPrivate from "../layouts/Layout.private";
 import Pageuser from "../pages/page.user/pageuser";
@@ -35,11 +34,7 @@ export const routesDashboard: RouteType[] = [
     element: LayoutPrivate,
     protected: true,
     children: [
-      {
-        path: "admin",
-        element: Pageadmin,
-        exact: true,
-      }
+   
     ],
   },
 ];

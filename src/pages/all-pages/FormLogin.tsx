@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { login } from "../../interfaces/interfac";
 import { LoginUser } from "../../Store/actions/auth.actions";
 import { useNavigate, useNavigation } from "react-router-dom";
+import Form from "../../components/Form";
 
 const initial = {
   email: "",
@@ -40,13 +41,12 @@ const FormLogin = () => {
         <div>
           <label>Correo</label>
           <div>
-            <input
-              className="border-2 border-gray-400 rounded-lg px-3"
+            <Form
+              name="email"
+              onChange={handleChange}
+              placeholder="example@gmail.com"
               type="email"
               value={values.email}
-              onChange={handleChange}
-              name="email"
-              placeholder="example@fmail.com"
             />
           </div>
           {errors && <p>{errors.email}</p>}
@@ -54,13 +54,12 @@ const FormLogin = () => {
         <div>
           <label>Contraseña</label>
           <div>
-            <input
-              className="border-2 border-gray-400 rounded-lg px-3"
-              type="password"
-              value={values.password}
-              onChange={handleChange}
+            <Form
               name="password"
-              placeholder="*************"
+              onChange={handleChange}
+              value={values.password}
+              placeholder="Contraseña"
+              type="password"
             />
           </div>
           {errors && <p>{errors.password}</p>}

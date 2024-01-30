@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { register } from "../../interfaces/interfac";
 import { registerUser } from "../../Store/actions/auth.actions";
 import { useAppDispatch } from "../../Store/Slices";
+import Form from "../../components/Form";
 
 const initial = {
   name: "",
@@ -44,13 +45,12 @@ const FormRegister = () => {
         <div>
           <label>Correo</label>
           <div>
-            <input
-              className="border-2 border-gray-400 rounded-lg px-3"
+            <Form
+              name="email"
+              onChange={handleChange}
+              placeholder="example@gmail.com"
               type="email"
               value={values.email}
-              onChange={handleChange}
-              name="email"
-              placeholder="example@fmail.com"
             />
           </div>
           {errors && <p className="text-red-500">{errors.email}</p>}
@@ -58,13 +58,11 @@ const FormRegister = () => {
         <div>
           <label>Nombre</label>
           <div>
-            <input
-              className="border-2 border-gray-400 rounded-lg px-3"
-              type="text"
-              value={values.name}
-              onChange={handleChange}
+            <Form
               name="name"
-              placeholder="pepito"
+              onChange={handleChange}
+              value={values.name}
+              placeholder="Nombre"
             />
           </div>
           {errors && <p className="text-red-500">{errors.name}</p>}
@@ -72,13 +70,12 @@ const FormRegister = () => {
         <div>
           <label>Contraseña</label>
           <div>
-            <input
-              className="border-2 border-gray-400 rounded-lg px-3"
-              type="password"
-              value={values.password}
-              onChange={handleChange}
+            <Form
               name="password"
-              placeholder="*************"
+              onChange={handleChange}
+              value={values.password}
+              placeholder="Contraseña"
+              type="password"
             />
           </div>
           {errors && <p className="text-red-500">{errors.password}</p>}
@@ -86,13 +83,12 @@ const FormRegister = () => {
         <div>
           <label>Confirmación contraseña</label>
           <div>
-            <input
-              className="border-2 border-gray-400 rounded-lg px-3"
-              type="password"
-              value={values.confirmPassword}
-              onChange={handleChange}
+            <Form
               name="confirmPassword"
+              onChange={handleChange}
+              value={values.confirmPassword}
               placeholder="*************"
+              type="password"
             />
           </div>
           {errors && <p className="text-red-500">{errors.confirmPassword}</p>}
