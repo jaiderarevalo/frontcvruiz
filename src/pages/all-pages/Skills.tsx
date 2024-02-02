@@ -10,7 +10,7 @@ import IconsFont from "../../components/IconsFont";
 import { faRemove } from "@fortawesome/free-solid-svg-icons";
 import { SkillImages } from "../../firebase/component/ImagesFirebase";
 import FileUploader from "../../firebase/component/FileHandler";
-import  code from '../../images/code.jpg'
+import code from "../../images/code.jpg";
 const Skills = () => {
   const { user } = useSelector((root: RootState) => root.auth);
   const [skilles, setSkilles] = useState([]);
@@ -30,7 +30,6 @@ const Skills = () => {
   }, []);
 
   const removeSkill = async (id: string, imageUrl: string) => {
-
     // Eliminar la imagen de Firebase Storage
     await deleteImageFromFirebase(imageUrl);
 
@@ -42,7 +41,6 @@ const Skills = () => {
       const response = await dispatch(getSkillUser());
       return response;
     }
-
   };
   const deleteImageFromFirebase = async (imageUrl: string) => {
     const storage = getStorage();
@@ -56,13 +54,13 @@ const Skills = () => {
   };
 
   return (
-    <div className="h-full " >
-      {user?.role === "admin" ? (
-        <div  className="h-2/3 py-36  "
-        style={{ backgroundImage: `url(${code})`
-         }}
-         >
-          <div className="flex my-50 py-5 border-2 border-gray-500 shadow-lg shadow-slate-600 mx-80 rounded-xl">
+    <div className="h-full ">
+      <div
+        className="h-2/3  py-10 "
+        style={{ backgroundImage: `url(${code})` }}
+      >
+        {user?.role === "admin" && (
+          <div className="flex my-50 mt-10 border-2 border-gray-500 shadow-lg shadow-slate-600 mx-80 rounded-xl">
             <div className=" m-auto w-2/5  text-center ">
               <p className="font-extrabold  text-2xl text-white text-center py-2  ">
                 Elegir imagen de Habilidades
@@ -70,11 +68,16 @@ const Skills = () => {
               <FileUploader newFileFirebase="ImageSkill" />
             </div>
           </div>
-          <div className="my-10">
-            {Array.isArray(skill) && skill.length > 0 ? (
-              <div className="grid grid-cols-5 gap-10 px-10">
-                {skill.map((image) => (
-                  <div key={image.id} className=" h-56 w-64">
+        )}
+        <div className="mt-10">
+          <div className="flex py-5">
+            <h1 className=" m-auto shadow-xl shadow-red-700 px-20 font-bold text-2xl text-white">Habilidades</h1>
+          </div>
+          {Array.isArray(skill) && skill.length > 0 ? (
+            <div className="grid grid-cols-5 gap-10 px-10">
+              {skill.map((image) => (
+                <div key={image.id} className=" h-56 w-64">
+                  {user?.role === "admin" && (
                     <div className=" flex justify-end items-end">
                       <button
                         onClick={() => {
@@ -88,50 +91,22 @@ const Skills = () => {
                         />
                       </button>
                     </div>
-                    <img
-                      className="rounded-xl border-2 w-full h-full border-gray-600 shadow-xl shadow-gray-600"
-                      alt="imagen en ejecución"
-                      src={image.skill}
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div>
-                <h1>No tienes Imagenes de tus habilidades</h1>
-              </div>
-            )}
-          </div>
+                  )}
+                  <img
+                    className="rounded-xl border-2 w-full h-full border-gray-600 shadow-xl shadow-gray-600"
+                    alt="imagen en ejecución"
+                    src={image.skill}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              <h1>No tienes Imagenes de tus habilidades</h1>
+            </div>
+          )}
         </div>
-      ) : (
-        <div  className="bg-cover rounded-t-lg"
-        style={{ backgroundImage: `url(${code})` }} >
-          <div className="flex">
-            <h1 className="m-auto font-bold text-2xl my-10 shadow-xl text-white shadow-purple-300">
-              Habilidades
-            </h1>
-          </div>
-          <div>
-            {Array.isArray(skilles) && skilles.length > 0 ? (
-              <div className="grid grid-cols-5 gap-10 px-10">
-                {skilles.map((image) => (
-                  <div key={image.id} className=" h-56 w-64">
-                    <img
-                      className="rounded-xl border-2 w-full h-full border-gray-600 shadow-xl shadow-gray-600"
-                      alt="imagen en ejecución"
-                      src={image.skill}
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div>
-                <h1>No tienes Imagenes de tus habilidades</h1>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
