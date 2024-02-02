@@ -43,7 +43,7 @@ const projectSlice = createSlice({
   initialState,
   reducers: {
     setIsEdit: (state, { payload }: any) => {
-      console.log("soy el payload de login ", payload);
+      console.log("soy el payload de isEdit", payload);
       state.isEdit = payload
     },
   },

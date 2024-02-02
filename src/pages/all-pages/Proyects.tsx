@@ -15,16 +15,12 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import IconsFont from "../../components/IconsFont";
-import { faEdit, faRemove } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus, faRemove } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
-import code from "../../images/code.jpg";
 import appFirebase from "../../firebase/credenciales";
-import {
-  UpdateprojectInterface,
-  projectInterface,
-} from "../../interfaces/interface-project";
+import { UpdateprojectInterface } from "../../interfaces/interface-project";
 import { useFormik } from "formik";
 import Form from "../../components/Form";
 import { setIsEdit } from "../../Store/Slices/projects.slice";
@@ -32,20 +28,29 @@ import { setIsEdit } from "../../Store/Slices/projects.slice";
 const validationSchema = Yup.object({
   name: Yup.string().required("Nombre requerido"),
   description: Yup.string().required("Descripción requerida"),
-  skills: Yup.string().required("Habilidades requeridas"),
 });
 
 const storage = getStorage(appFirebase);
+const inialValuesState = {
+  name: "",
+  description: "",
+  skills: "",
+  image: "",
+  repository: "",
+};
 
 const Proyects = () => {
   const { project, isEdit } = useSelector((root: RootState) => root.project);
-  const [urlInDesc, setUrlInDesc] = useState<string | null>(null);
+  console.log("es el edit", isEdit);
 
-  const [projects, setProjects] = useState<any>([]);
+  const { user } = useSelector((root: RootState) => root.auth);
+  const [urlInDesc, setUrlInDesc] = useState<string | null>(null);
+  console.log("es el projects de redux", project);
+
   const [selectedProject, setSelectedProject] =
     useState<UpdateprojectInterface | null>(null);
-  console.log("namessss", selectedProject?.id);
-  const initialValues = {
+  console.log("namessss", selectedProject);
+  const inialValuesEdit = {
     name: selectedProject?.name,
     description: selectedProject?.description,
     skills: selectedProject?.skills,
@@ -70,12 +75,8 @@ const Proyects = () => {
 
     // Despachar la acción para eliminar la habilidad en la base de datos
     const res = await dispatch(DeleteProjectUser(id));
-
+    await dispatch(getProjectUser());
     // Si la eliminación en la base de datos es exitosa, actualizar el estado local
-    if (res.meta.requestStatus === "fulfilled") {
-      await dispatch(getProjectUser());
-    }
-
     console.log("respuesta de eliminacion", res);
   };
   const deleteImageFromFirebase = async (imageUrl: string) => {
@@ -91,8 +92,7 @@ const Proyects = () => {
   };
 
   const AllProjects = async () => {
-    const res = await dispatch(getProjectUser());
-    setProjects(res.payload);
+    await dispatch(getProjectUser());
   };
 
   useEffect(() => {
@@ -109,16 +109,19 @@ const Proyects = () => {
         image: urlInDesc,
         repository: data.repository,
       };
-      console.log("proyectos todos campos", project);
 
-      const res = await dispatch(updateProjectUser({body:projectUpdate}));
-      console.log("respuesta al actualizar", res.payload);
-
+      // Actualizar los valores del formulario usando setFieldValue
+      const res = await dispatch(updateProjectUser({ body: projectUpdate }));
       if (res.meta.requestStatus === "fulfilled") {
+        resetForm();
         await dispatch(getProjectUser());
+        console.log("respuesta al actualizar", res.payload);
+        await dispatch(setIsEdit(false));
       }
-    } else {
-      const project = {
+    }
+
+    if (!isEdit) {
+      const projectData = {
         name: data.name,
         description: data.description,
         skills: data.skills,
@@ -126,12 +129,14 @@ const Proyects = () => {
         repository: data.repository,
       };
 
-      const res = await dispatch(createProjectUser(project));
+      const res = await dispatch(createProjectUser(projectData));
 
       if (res.meta.requestStatus === "fulfilled") {
+        resetForm();
         await dispatch(getProjectUser());
       }
     }
+
     //detectar el archivo
   };
   const fileHandler = async (e: any) => {
@@ -155,152 +160,192 @@ const Proyects = () => {
   const {
     values,
     handleChange,
-    setFieldValue,
-    handleBlur,
     handleSubmit,
+    setFieldValue,
     resetForm,
     errors,
   } = useFormik({
-    initialValues,
+    initialValues: isEdit ? inialValuesEdit : inialValuesState,
     enableReinitialize: true,
     validationSchema,
     onSubmit,
   });
   const getOne = async (id: string) => {
-    const res = await dispatch(getOneProjectUser(id));
     await dispatch(setIsEdit(true));
-    setSelectedProject(res.payload);
+    const res = await dispatch(getOneProjectUser(id));
+    setSelectedProject(res.payload as any);
   };
   return (
     <div className=" bg-cover rounded-t-lg my-10">
-      <div className="flex pt-10 ">
-        <form
-          onSubmit={handleSubmit}
-          className="m-auto border-2 border-gray-400 shadow-xl shadow-gray-800 w-2/6  px-12 rounded-lg py-10 "
-        >
-          <div className="flex">
-            <h1 className=" py-4 m-auto text-3xl font-extrabold">Proyecto</h1>
-          </div>
-          <div className="">
-            <label className="">Nombre del Proyecto</label>
-            <Form
-              name="name"
-              onChange={handleChange}
-              placeholder="Nombre Proyecto"
-              value={values.name}
-            />
-            <p>{errors && <p>{errors.name}</p>}</p>
-          </div>
-          <div>
-            <label>Descripción</label>
-            <Form
-              name="description"
-              onChange={handleChange}
-              placeholder="Descripcion"
-              value={values.description}
-            />
-            <p>{errors && <p>{errors.description}</p>}</p>
-          </div>
-          <div>
-            <label>Habilidades</label>
-            <Form
-              name="skills"
-              onChange={handleChange}
-              placeholder="Habilidades"
-              value={values.skills}
-            />
-            <p>{errors && <p>{errors.skills}</p>}</p>
-          </div>
-          <div>
-            <label>Repositorio</label>
-            <Form
-              name="repository"
-              onChange={handleChange}
-              placeholder="www.github.com/etc"
-              value={values.repository}
-            />
-            <p>{errors && <p>{errors.skills}</p>}</p>
-          </div>
-          <div>
-            <label>Imagen</label>
-            <Form name="image" onChange={fileHandler} type="file" />
-            <p>{errors && <p>{errors.skills}</p>}</p>
-          </div>
-          <div className="flex mt-5">
-            <button
-              className="m-auto bg-gradient-to-tr from-red-500 to-blue-500 px-14 py-2 rounded-lg"
-              type="submit"
-            >
-              {isEdit ? "crear" : "Actualizar"}
-            </button>
-          </div>
-        </form>
-      </div>
-      <div className="my-10">
-        <h1 className="text-center text-3xl font-extrabold">
-          Proyectos Realizados
-        </h1>
-      </div>
-      <div className="grid grid-cols-5 gap-5  mx-20">
-        {Array.isArray(project) && project.length > 0 ? (
-          project.map((project) => (
-            <div>
-              <button
-                onClick={() => {
-                  console.log("soy el id del onclick project", project.id);
-                  removeSkill(project.id, project.image);
-                }}
-              >
-                <IconsFont
-                  className="bg-red-600 w-5
-                         h-5 rounded-full mt-2  "
-                  icon={faRemove}
-                />
-              </button>
-              <button
-                onClick={() => {
-                  console.log("soy el id del onclick project", project.id);
-                  getOne(project.id);
-                }}
-              >
-                <IconsFont
-                  className="bg-yellow-600 w-5
-                         h-5 rounded-full mx-2 mt-2  "
-                  icon={faEdit}
-                />
-              </button>
-              <div
-                key={project.id}
-                className="hover:bg-gray-300 py-5 h-96 px-3 rounded-xl border border-slate-600 shadow shadow-slate-600"
-              >
-                <label className="font-bold text-base ">
-                  Nombre del proyecto
-                </label>
-                <p>{project.name}</p>
-                <label className="font-bold text-base ">Habilidades</label>
-                <p>{project.skills}</p>
-                <label className="font-bold text-base ">Descripcion</label>
-                <p>{project.description}</p>
-
-                <img
-                  className="w-64 h-36 rounded-lg pt-2"
-                  alt="project o no hay imagen"
-                  src={project.image}
-                />
-                <p className="flex pt-3">
-                  <a
-                    className="hover:text-red-500 m-auto duration-700"
-                    href={project.repository}
-                  >
-                    Ver Repositorio
-                  </a>
-                </p>
-              </div>
+      {user?.role === "admin" && (
+        <div className="flex pt-10 ">
+          <form
+            onSubmit={handleSubmit}
+            className="m-auto border-2 border-gray-400 shadow-xl shadow-gray-800 w-2/6  px-12 rounded-lg py-10 "
+          >
+            <div className="flex">
+              <h1 className=" py-4 m-auto text-3xl font-extrabold">Proyecto</h1>
             </div>
-          ))
-        ) : (
-          <p>No project available</p>
-        )}
+            <div className="">
+              <label className="">Nombre del Proyecto</label>
+              <Form
+                name="name"
+                onChange={handleChange}
+                placeholder="Nombre Proyecto"
+                value={values.name}
+                className="border-2  border-gray-400 rounded-lg w-full px-2"
+              />
+              <p>{errors && <p>{errors.name}</p>}</p>
+            </div>
+            <div>
+              <label>Descripción</label>
+              <Form
+                name="description"
+                onChange={handleChange}
+                placeholder="Descripcion"
+                value={values.description}
+                className="border-2  border-gray-400 rounded-lg w-full px-2"
+              />
+              <p>{errors && <p>{errors.description}</p>}</p>
+            </div>
+            <div>
+              <label>Habilidades</label>
+              <Form
+                name="skills"
+                onChange={handleChange("skills")}
+                placeholder="Habilidades"
+                value={values.skills}
+                className="border-2  border-gray-400 rounded-lg w-full px-2"
+              />
+              <p>{errors && <p>{errors.skills}</p>}</p>
+            </div>
+            <div>
+              <label>Repositorio</label>
+              <Form
+                name="repository"
+                onChange={handleChange}
+                placeholder="www.github.com/etc"
+                value={values.repository}
+                className="border-2  border-gray-400 rounded-lg w-full px-2"
+              />
+              <p>{errors && <p>{errors.skills}</p>}</p>
+            </div>
+            <div>
+              <label>Imagen</label>
+              <Form
+                name="image"
+                onChange={fileHandler}
+                type="file"
+                className="border-2  border-gray-400 rounded-lg w-full px-2"
+              />
+              <p>{errors && <p>{errors.skills}</p>}</p>
+            </div>
+            <div className="flex mt-5">
+              <button
+                className="m-auto bg-gradient-to-tr from-red-500 to-blue-500 px-14 py-2 rounded-lg"
+                type="submit"
+              >
+                {isEdit ? "Actualizar" : "Crear"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      <div>
+        <div className="my-10">
+          <h1 className="text-center text-3xl font-extrabold">
+            Proyectos Realizados
+          </h1>
+          {user?.role === "admin" && (
+            <div className=" pl-20">
+              <button
+                className="flex"
+                onClick={() => {
+                  dispatch(setIsEdit(false));
+                }}
+              >
+                <div className=" justify-center items-center ">
+                  <IconsFont
+                    className="bg-blue-600 ml-1 text-white 
+                       h-7 w-7 rounded-full mt-2  "
+                    icon={faPlus}
+                  />
+                </div>
+                <div className=" pl-2 h-10 flex justify-center items-center ">
+                  <p className="font-bold ">Crear</p>
+                </div>
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="grid grid-cols-5 gap-5 mx-20">
+          {Array.isArray(project) && project.length > 0 ? (
+            project.map((project) => (
+              <div>
+                {user?.role === "admin" && (
+                  <div>
+                    {" "}
+                    <button
+                      onClick={() => {
+                        console.log(
+                          "soy el id del onclick project",
+                          project.id
+                        );
+                        removeSkill(project.id, project.image);
+                      }}
+                    >
+                      <IconsFont
+                        className="bg-red-600 w-5
+                         h-5 rounded-full mt-2  "
+                        icon={faRemove}
+                      />
+                    </button>
+                    <button
+                      onClick={() => {
+                        getOne(project.id);
+                      }}
+                    >
+                      <IconsFont
+                        className="bg-yellow-600 w-5
+                         h-5 rounded-full mx-2 mt-2  "
+                        icon={faEdit}
+                      />
+                    </button>
+                  </div>
+                )}
+                <div
+                  key={project.id}
+                  className="hover:bg-gray-300 py-5 h-96 px-3 rounded-xl border border-slate-600 shadow shadow-slate-600"
+                >
+                  <label className="font-bold text-base ">
+                    Nombre del proyecto
+                  </label>
+                  <p>{project.name}</p>
+                  <label className="font-bold text-base ">Habilidades</label>
+                  <p>{project.skills}</p>
+                  <label className="font-bold text-base ">Descripción</label>
+                  <p>{project.description}</p>
+
+                  <img
+                    className="w-64 h-36 rounded-lg pt-2"
+                    alt="project o no hay imagen"
+                    src={project.image}
+                  />
+                  <p className="flex pt-3">
+                    <a
+                      className="hover:text-red-500 m-auto duration-700"
+                      href={project.repository}
+                    >
+                      Ver Repositorio
+                    </a>
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No project available</p>
+          )}
+        </div>
       </div>
     </div>
   );
