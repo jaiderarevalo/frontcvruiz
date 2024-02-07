@@ -5,7 +5,7 @@ const LayoutPublic = () => {
   return (
     <div>
       <Outlet />
-      <div className="text-center grid grid-cols-3 py-2 mb-10 bg-gray-900  shadow-gray-700 shadow-xl ">
+      <div className="text-center grid grid-cols-3 py-2 xl:mb-10 bg-gray-900  shadow-gray-700 shadow-xl ">
         <div></div>
 		<div>
           <p className=" text-white font-bold text-lg  ">

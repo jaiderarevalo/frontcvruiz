@@ -109,7 +109,7 @@ console.log("imagen a jpg", resizedImage);
         className="border-2 text-white border-gray-400 rounded-lg w-full px-2"
       />
       <button
-        className="bg-gradient-to-tr from-red-500 to-blue-500 my-5 py-2 px-10 rounded-xl"
+        className="bg-gradient-to-tr from-red-500  to-blue-500 my-5  py-2 px-10 rounded-xl"
         onClick={() => handleClick()}
       >
         Guardar
