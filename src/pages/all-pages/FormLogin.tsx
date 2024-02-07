@@ -3,7 +3,7 @@ import { useAppDispatch } from "../../Store/Slices";
 import * as Yup from "yup";
 import { login } from "../../interfaces/interfac";
 import { LoginUser } from "../../Store/actions/auth.actions";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Form from "../../components/Form";
 
 const initial = {
@@ -42,9 +42,10 @@ const FormLogin = () => {
           <label>Correo</label>
           <div>
             <Form
+              className="border border-black rounded-xl px-2"
               name="email"
               onChange={handleChange}
-              placeholder="example@gmail.com"
+              placeholder="Example@gmail.com"
               type="email"
               value={values.email}
             />
@@ -55,6 +56,7 @@ const FormLogin = () => {
           <label>Contraseña</label>
           <div>
             <Form
+              className="border border-black rounded-xl px-2"
               name="password"
               onChange={handleChange}
               value={values.password}

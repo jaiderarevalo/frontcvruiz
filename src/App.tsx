@@ -1,4 +1,3 @@
-import "./App.css";
 import AuthVerify from "./providers/AuthVerify";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";

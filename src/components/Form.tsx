@@ -14,7 +14,7 @@ interface formProp {
   name: string;
   placeholder?: string;
   value?: string
-  className: string
+  className?: string
   onBlur?: any
 }
 const Form = ({value, type = "text", onChange, name, placeholder,className,onBlur }: formProp) => {

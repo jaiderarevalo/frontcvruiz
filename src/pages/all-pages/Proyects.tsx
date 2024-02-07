@@ -41,12 +41,9 @@ const inialValuesState = {
 
 const Proyects = () => {
   const { project, isEdit } = useSelector((root: RootState) => root.project);
-  console.log("es el edit", isEdit);
 
   const { user } = useSelector((root: RootState) => root.auth);
   const [urlInDesc, setUrlInDesc] = useState<string | null>(null);
-  console.log("es el projects de redux", project);
-
   const [selectedProject, setSelectedProject] =
     useState<UpdateprojectInterface | null>(null);
   console.log("namessss", selectedProject);
@@ -68,16 +65,13 @@ const Proyects = () => {
   }, []);
 
   const removeSkill = async (id: string, imageUrl: string) => {
-    console.log("soy el id de removeprojects", id);
-
     // Eliminar la imagen de Firebase Storage
     await deleteImageFromFirebase(imageUrl);
 
     // Despachar la acción para eliminar la habilidad en la base de datos
-    const res = await dispatch(DeleteProjectUser(id));
+    await dispatch(DeleteProjectUser(id));
     await dispatch(getProjectUser());
     // Si la eliminación en la base de datos es exitosa, actualizar el estado local
-    console.log("respuesta de eliminacion", res);
   };
   const deleteImageFromFirebase = async (imageUrl: string) => {
     const storage = getStorage();
@@ -85,7 +79,6 @@ const Proyects = () => {
 
     try {
       await deleteObject(imageRef);
-      console.log("Imagen eliminada de Firebase Storage");
     } catch (error) {
       console.error("Error al eliminar la imagen de Firebase Storage", error);
     }
@@ -99,7 +92,6 @@ const Proyects = () => {
     AllProjects();
   }, []);
   const onSubmit = async (data: any) => {
-    console.log("es la data update", data);
     if (isEdit) {
       const projectUpdate = {
         id: selectedProject?.id,
@@ -115,7 +107,6 @@ const Proyects = () => {
       if (res.meta.requestStatus === "fulfilled") {
         resetForm();
         await dispatch(getProjectUser());
-        console.log("respuesta al actualizar", res.payload);
         await dispatch(setIsEdit(false));
       }
     }
@@ -157,14 +148,7 @@ const Proyects = () => {
       }
     }
   };
-  const {
-    values,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-    resetForm,
-    errors,
-  } = useFormik({
+  const { values, handleChange, handleSubmit, resetForm, errors } = useFormik({
     initialValues: isEdit ? inialValuesEdit : inialValuesState,
     enableReinitialize: true,
     validationSchema,
@@ -178,67 +162,69 @@ const Proyects = () => {
   return (
     <div className=" bg-cover rounded-t-lg my-10">
       {user?.role === "admin" && (
-        <div className="flex pt-10 ">
+        <div className="xl:flex xl:pt-10">
           <form
             onSubmit={handleSubmit}
-            className="m-auto border-2 border-gray-400 shadow-xl shadow-gray-800 w-2/6  px-12 rounded-lg py-10 "
+            className="m-auto border-2 border-gray-400 shadow-xl shadow-gray-800 xl:w-2/6 md:mx-32  px-12 rounded-lg py-10 "
           >
             <div className="flex">
-              <h1 className=" py-4 m-auto text-3xl font-extrabold">Proyecto</h1>
+              <h1 className=" py-4 m-auto text-3xl md:text-4xl font-extrabold">Proyecto</h1>
             </div>
             <div className="">
-              <label className="">Nombre del Proyecto</label>
+              <label className="md:text-xl">Nombre del Proyecto</label>
               <Form
                 name="name"
                 onChange={handleChange}
                 placeholder="Nombre Proyecto"
                 value={values.name}
-                className="border-2  border-gray-400 rounded-lg w-full px-2"
+                className="border-2 py-2  border-gray-400 rounded-lg w-full px-2"
               />
-              <p>{errors && <p>{errors.name}</p>}</p>
+              <p>{errors && <p className="text-red-500">{errors.name}</p>}</p>
             </div>
             <div>
-              <label>Descripción</label>
+              <label className="md:text-xl">Descripción</label>
               <Form
                 name="description"
                 onChange={handleChange}
                 placeholder="Descripcion"
                 value={values.description}
-                className="border-2  border-gray-400 rounded-lg w-full px-2"
+                className="border-2 py-2  border-gray-400 rounded-lg w-full px-2"
               />
-              <p>{errors && <p>{errors.description}</p>}</p>
+              <p>
+                {errors && <p className="text-red-500">{errors.description}</p>}
+              </p>
             </div>
             <div>
-              <label>Habilidades</label>
+              <label className="md:text-xl">Habilidades</label>
               <Form
                 name="skills"
-                onChange={handleChange("skills")}
+                onChange={handleChange}
                 placeholder="Habilidades"
                 value={values.skills}
-                className="border-2  border-gray-400 rounded-lg w-full px-2"
+                className="border-2 py-2 border-gray-400 rounded-lg w-full px-2"
               />
-              <p>{errors && <p>{errors.skills}</p>}</p>
+              <p>{errors && <p className="text-red-500">{errors.skills}</p>}</p>
             </div>
             <div>
-              <label>Repositorio</label>
+              <label className="md:text-xl">Repositorio</label>
               <Form
                 name="repository"
                 onChange={handleChange}
                 placeholder="www.github.com/etc"
-                value={values.repository}
-                className="border-2  border-gray-400 rounded-lg w-full px-2"
+                value={values.repository as string}
+                className="border-2 py-2 border-gray-400 rounded-lg w-full px-2"
               />
-              <p>{errors && <p>{errors.skills}</p>}</p>
+              <p>{errors && <p className="text-red-500">{errors.skills}</p>}</p>
             </div>
             <div>
-              <label>Imagen</label>
+              <label className="md:text-xl" >Imagen</label>
               <Form
                 name="image"
                 onChange={fileHandler}
                 type="file"
-                className="border-2  border-gray-400 rounded-lg w-full px-2"
+                className="border-2 py-2  border-gray-400 rounded-lg w-full px-2"
               />
-              <p>{errors && <p>{errors.skills}</p>}</p>
+              <p>{errors && <p className="text-red-500">{errors.skills}</p>}</p>
             </div>
             <div className="flex mt-5">
               <button
@@ -257,7 +243,7 @@ const Proyects = () => {
             Proyectos Realizados
           </h1>
           {user?.role === "admin" && (
-            <div className=" pl-20">
+            <div className=" xl:pl-20 pl-10 py-2">
               <button
                 className="flex"
                 onClick={() => {
@@ -278,25 +264,19 @@ const Proyects = () => {
             </div>
           )}
         </div>
-        <div className="grid grid-cols-5 gap-5 mx-20">
+        <div className="xl:grid xl:grid-cols-5 xl:gap-5 xl:mx-20 md:grid md:grid-cols-2 md:gap-5 mx-10">
           {Array.isArray(project) && project.length > 0 ? (
             project.map((project) => (
-              <div>
+              <div className="py-3">
                 {user?.role === "admin" && (
                   <div>
-                    {" "}
                     <button
                       onClick={() => {
-                        console.log(
-                          "soy el id del onclick project",
-                          project.id
-                        );
                         removeSkill(project.id, project.image);
                       }}
                     >
                       <IconsFont
-                        className="bg-red-600 w-5
-                         h-5 rounded-full mt-2  "
+                        className="bg-red-600 w-5 h-5 rounded-full mt-2  "
                         icon={faRemove}
                       />
                     </button>
@@ -306,8 +286,7 @@ const Proyects = () => {
                       }}
                     >
                       <IconsFont
-                        className="bg-yellow-600 w-5
-                         h-5 rounded-full mx-2 mt-2  "
+                        className="bg-yellow-600 w-5 h-5 rounded-full mx-2 mt-2  "
                         icon={faEdit}
                       />
                     </button>
@@ -327,7 +306,7 @@ const Proyects = () => {
                   <p>{project.description}</p>
 
                   <img
-                    className="w-64 h-36 rounded-lg pt-2"
+                    className="xl:w-64 xl:h-36 h-40 w-full rounded-lg pt-2"
                     alt="project o no hay imagen"
                     src={project.image}
                   />
@@ -343,7 +322,7 @@ const Proyects = () => {
               </div>
             ))
           ) : (
-            <p>No project available</p>
+            <p className="text-4xl xl:text-xl">No tienes proyectos</p>
           )}
         </div>
       </div>

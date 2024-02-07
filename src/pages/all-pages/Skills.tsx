@@ -60,23 +60,23 @@ const Skills = () => {
         style={{ backgroundImage: `url(${code})` }}
       >
         {user?.role === "admin" && (
-          <div className="flex my-50 mt-10 border-2 border-gray-500 shadow-lg shadow-slate-600 mx-80 rounded-xl">
+          <div className="xl:flex xl:my-50 xl:mt-10 border-2 border-gray-500 shadow-lg shadow-slate-600 xl:mx-80  rounded-xl">
             <div className=" m-auto w-2/5  text-center ">
-              <p className="font-extrabold  text-2xl text-white text-center py-2  ">
+              <p className="font-extrabold  xl:text-2xl text-lg text-white text-center py-2  ">
                 Elegir imagen de Habilidades
               </p>
               <FileUploader newFileFirebase="ImageSkill" />
             </div>
           </div>
         )}
-        <div className="mt-10">
+        <div className="">
           <div className="flex py-5">
             <h1 className=" m-auto shadow-xl shadow-red-700 px-20 font-bold text-2xl text-white">Habilidades</h1>
           </div>
           {Array.isArray(skill) && skill.length > 0 ? (
-            <div className="grid grid-cols-5 gap-10 px-10">
+            <div className="xl:grid xl:grid-cols-5 md:grid md:grid-cols-2 gap-10 px-10">
               {skill.map((image) => (
-                <div key={image.id} className=" h-56 w-64">
+                <div key={image.id} className=" xl:h-56 xl:w-64">
                   {user?.role === "admin" && (
                     <div className=" flex justify-end items-end">
                       <button
@@ -85,15 +85,14 @@ const Skills = () => {
                         }}
                       >
                         <IconsFont
-                          className="bg-red-600 w-5
-                         h-5 rounded-full mt-2  "
+                          className="bg-red-600 w-5 h-5 rounded-full mt-2  "
                           icon={faRemove}
                         />
                       </button>
                     </div>
                   )}
                   <img
-                    className="rounded-xl border-2 w-full h-full border-gray-600 shadow-xl shadow-gray-600"
+                    className="rounded-xl border-2 xl:w-full xl:h-full h-64 w-96 md:w-full border-gray-600 shadow-xl shadow-gray-600"
                     alt="imagen en ejecución"
                     src={image.skill}
                   />
@@ -102,7 +101,7 @@ const Skills = () => {
             </div>
           ) : (
             <div>
-              <h1>No tienes Imagenes de tus habilidades</h1>
+              <h1 className="text-white text-3xl text-center ">No tienes habilidades</h1>
             </div>
           )}
         </div>
