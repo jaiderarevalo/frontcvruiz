@@ -1,6 +1,7 @@
 import { AxiosBasicCredentials } from "axios";
 import { Axios } from "./axios";
 import { convertToDataItems, makeDataFormData } from "./Api.utils";
+import { URL_API } from "../firebase/redencialesENV/ENV";
 
 interface ApiCallOptions {
   header?: Record<string, string>;
@@ -21,7 +22,7 @@ export type TypePostData = {
 };
 
 export class Api {
-  static baseUrl = "http://192.168.11.105:3000/app";
+  static baseUrl = URL_API;
   //////
   static async get<T>(
     url: string,
