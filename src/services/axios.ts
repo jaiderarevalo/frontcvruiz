@@ -1,7 +1,8 @@
 import axios from "axios";
+import { URL_API } from "../firebase/redencialesENV/ENV";
 
 export const Axios = axios.create({
-  baseURL: "http://192.168.11.105:3000/app",
+  baseURL: URL_API,
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
