@@ -13,7 +13,7 @@ export interface UpdateprojectInterface {
   name?: string;
   description?: string;
   skills?: string;
-  image?: string | null | undefined;
+  image?: string | null 
   repository?: string | null;
 }
 

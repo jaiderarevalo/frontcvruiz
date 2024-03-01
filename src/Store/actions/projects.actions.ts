@@ -126,7 +126,6 @@ export const updateProjectUser = createAsyncThunk(
   "project/updateProjectUser",
   async (
     {  body }: {body: UpdateprojectInterface },
-    { rejectWithValue }
   ) => {
     try {
       console.log("body del mismo patch",body);
@@ -135,11 +134,11 @@ export const updateProjectUser = createAsyncThunk(
         name: body.name,
         description: body.description,
         skills: body.skills,
-        image: body.image,
+        image: body?.image,
         repository: body.repository,
       });
-      console.log("soy el response del action patch", response.data);
-      
+     console.log(response.data);
+     
       return response.data;
     } catch (error) {
       console.log("Error", error);
