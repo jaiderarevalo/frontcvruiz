@@ -98,11 +98,9 @@ const Proyects = () => {
         name: data.name,
         description: data.description,
         skills: data.skills,
-        image: urlInDesc,
+        image: urlInDesc || "",
         repository: data.repository,
       };
-
-      // Actualizar los valores del formulario usando setFieldValue
       const res = await dispatch(updateProjectUser({ body: projectUpdate }));
       if (res.meta.requestStatus === "fulfilled") {
         resetForm();
@@ -131,7 +129,7 @@ const Proyects = () => {
     //detectar el archivo
   };
   const fileHandler = async (e: any) => {
-    const archivo = e.target.files[0];
+    const archivo = e.target.files[0] || '';
     if (archivo) {
       //cargarlo al storage de firebase
       const nameArch = `${nuevoUuid}`;
