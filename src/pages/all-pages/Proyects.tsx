@@ -6,7 +6,7 @@ import {
   getOneProjectUser,
   getProjectUser,
   updateProjectUser,
-} from "../../Store/actions/projects.actions";
+} from "@/Store/actions/projects.actions";
 import {
   deleteObject,
   getDownloadURL,
@@ -14,16 +14,16 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
-import IconsFont from "../../components/IconsFont";
 import { faEdit, faPlus, faRemove } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
-import appFirebase from "../../firebase/credenciales";
-import { UpdateprojectInterface } from "../../interfaces/interface-project";
 import { useFormik } from "formik";
-import Form from "../../components/Form";
-import { setIsEdit } from "../../Store/Slices/projects.slice";
+import IconsFont from "@/components/IconsFont";
+import { setIsEdit } from "@/Store/Slices/projects.slice";
+import appFirebase from "@/firebase/credenciales";
+import { UpdateprojectInterface } from "@/interfaces/interface-project";
+import Form from "@/components/Form";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Nombre requerido"),
@@ -162,10 +162,10 @@ const Proyects = () => {
   return (
     <div className=" bg-cover rounded-t-lg my-10">
       {user?.role === "admin" && (
-        <div className="xl:flex xl:pt-10">
+        <div className="flex items-center justify-center  xl:pt-10">
           <form
             onSubmit={handleSubmit}
-            className="m-auto border-2 border-gray-400 shadow-xl shadow-gray-800 xl:w-2/6 md:mx-32  px-12 rounded-lg py-10 "
+            className="border-2 border-gray-400 shadow-xl shadow-gray-800 w-2/6 md:mx-32  px-12 rounded-lg py-10 "
           >
             <div className="flex">
               <h1 className=" py-4 m-auto text-3xl md:text-4xl font-extrabold">Proyecto</h1>

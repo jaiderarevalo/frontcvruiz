@@ -1,9 +1,9 @@
+import { useAppDispatch } from "@/Store/Slices";
+import { registerUser } from "@/Store/actions/auth.actions";
+import Form from "@/components/Form";
+import { register } from "@/interfaces/interfac";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { register } from "../../interfaces/interfac";
-import { registerUser } from "../../Store/actions/auth.actions";
-import { useAppDispatch } from "../../Store/Slices";
-import Form from "../../components/Form";
 
 const initial = {
   name: "",
