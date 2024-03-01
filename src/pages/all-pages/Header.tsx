@@ -1,10 +1,10 @@
-import foto from "../../images/fotoDeveloper.jpeg";
-import space from "../../images/star.jpg";
-import logo from "../../images/logoo.png";
-import git from "../../images/github.png";
+import foto from "@/images/fotoDeveloper.jpeg";
+import space from "@/images/star.jpg";
+import logo from "@/images/logoo.png";
+import git from "@/images/github.png";
 import { Link } from "react-router-dom";
-import IconsFont from "../../components/IconsFont";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import IconsFont from "@/components/IconsFont";
 
 function Header() {
   return (

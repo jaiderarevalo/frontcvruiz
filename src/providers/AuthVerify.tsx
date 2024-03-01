@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { useAppDispatch } from "../Store/Slices";
-import { verifyToken } from "../Store/actions/auth.actions";
-import { setLogin } from "../Store/Slices/auth.slice";
+import { useAppDispatch } from "@/Store/Slices";
+import { verifyToken } from "@/Store/actions/auth.actions";
+import { setLogin } from "@/Store/Slices/auth.slice";
 
 type Props = {
   children: React.ReactElement;

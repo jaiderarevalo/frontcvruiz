@@ -1,10 +1,10 @@
 import { useFormik } from "formik";
-import { useAppDispatch } from "../../Store/Slices";
 import * as Yup from "yup";
-import { login } from "../../interfaces/interfac";
-import { LoginUser } from "../../Store/actions/auth.actions";
 import { useNavigate } from "react-router-dom";
-import Form from "../../components/Form";
+import { LoginUser } from "@/Store/actions/auth.actions";
+import { login } from "@/interfaces/interfac";
+import Form from "@/components/Form";
+import { useAppDispatch } from "@/Store/Slices";
 
 const initial = {
   email: "",

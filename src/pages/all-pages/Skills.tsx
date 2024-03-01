@@ -1,16 +1,16 @@
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { RootState, useAppDispatch } from "../../Store/Slices";
+import { RootState, useAppDispatch } from "@/Store/Slices";
 import {
   DeleteSkillUser,
   getSkillUser,
-} from "../../Store/actions/projects.actions";
+} from "@/Store/actions/projects.actions";
 import { useSelector } from "react-redux";
-import IconsFont from "../../components/IconsFont";
+import IconsFont from "@/components/IconsFont";
 import { faRemove } from "@fortawesome/free-solid-svg-icons";
-import { SkillImages } from "../../firebase/component/ImagesFirebase";
-import FileUploader from "../../firebase/component/FileHandler";
-import code from "../../images/code.jpg";
+import { SkillImages } from "@/firebase/component/ImagesFirebase";
+import FileUploader from "@/firebase/component/FileHandler";
+import code from "@/images/code.jpg";
 const Skills = () => {
   const { user } = useSelector((root: RootState) => root.auth);
   const [skilles, setSkilles] = useState([]);
@@ -21,8 +21,7 @@ const Skills = () => {
   }, []);
 
   const getProjects = async () => {
-    const res = await dispatch<any>(getSkillUser());
-    setSkilles(res.payload);
+    return await dispatch<any>(getSkillUser());
   };
 
   useEffect(() => {
