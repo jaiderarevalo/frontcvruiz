@@ -1,9 +1,9 @@
-name: REACT DEV CD 🚀
+name: REACT PROD CD 🚀
 
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   build-and-push:
@@ -49,7 +49,7 @@ jobs:
   deploy:
     needs: [build-and-push]
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
     steps:
       # Descargar el artifact
       - name: Download dist directory
@@ -67,7 +67,7 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}" > deploy_key
           chmod 600 deploy_key
-          
+
           rsync -avz --delete -e 'ssh -i deploy_key -o StrictHostKeyChecking=no' ./dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_FOLDER_PROJECT }}
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
