@@ -67,9 +67,7 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}" > deploy_key
           chmod 600 deploy_key
-          # Listar el contenido del directorio dist/
-          echo "Listing contents of dist/ directory:"
-          ls -la ./dist/
-          rsync -avz --delete -e 'ssh -i deploy_key -o StrictHostKeyChecking=no' ./dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/jaiderruiz/dev.jaiderruiz
+
+          rsync -avz --delete -e 'ssh -i deploy_key -o StrictHostKeyChecking=no' ./dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_FOLDER_PROJECT }}
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
