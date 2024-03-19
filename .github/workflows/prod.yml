@@ -30,6 +30,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Config enviroments
+        run: |
+          echo "" >> .env 
+          echo "VITE_REACT_APP_API_KEY=${{ secrets.VITE_REACT_APP_API_KEY }}" >> .env
+          echo "" >> .env 
+          echo "VITE_REACT_APP_AUTHDOMAIN=${{ secrets.VITE_REACT_APP_AUTHDOMAIN }}" >> .env
+          echo "" >> .env 
+          echo "VITE_REACT_APP_PROJECTID=${{ secrets.VITE_REACT_APP_PROJECTID }}" >> .env
+          echo "" >> .env 
+          echo "VITE_REACT_APP_STORAGEBUCKET=${{ secrets.DEV_VITE_REACT_APP_STORAGEBUCKET }}" >> .env
+          echo "" >> .env 
+          echo "VITE_REACT_APP_MESSAGINSENDERID=${{ secrets.DEV_VITE_REACT_APP_MESSAGINSENDERID }}" >> .env
+          echo "" >> .env 
+          echo "VITE_REACT_APP_APPID=${{ secrets.VITE_REACT_APP_APPID }}" >> .env
+          echo "" >> .env 
+          echo "VITE_REACT_APP_URL_API=${{ secrets.VITE_REACT_APP_URL_API }}" >> .env
+
       - name: Installing dependencies 📥
         run: npm install -f
 
