@@ -49,6 +49,7 @@ jobs:
   deploy:
     needs: [build-and-push]
     runs-on: ubuntu-latest
+    environment: development
     steps:
       # Descargar el artifact
       - name: Download dist directory
