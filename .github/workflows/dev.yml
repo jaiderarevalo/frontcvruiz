@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.14.2]
+        node-version: [18.17.0]
 
     steps:
       - name: Checkout 🛎
@@ -69,6 +69,6 @@ jobs:
           # Listar el contenido del directorio dist/
           echo "Listing contents of dist/ directory:"
           ls -la ./dist/
-          rsync -avz --delete -e 'ssh -i deploy_key -o StrictHostKeyChecking=no' ./dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/jaiderruiz-react/
+          rsync -avz --delete -e 'ssh -i deploy_key -o StrictHostKeyChecking=no' ./dist/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/jaiderruiz/dev.jaiderruiz
         env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
