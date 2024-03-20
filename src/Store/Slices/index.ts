@@ -4,7 +4,7 @@ import { ThunkDispatch, thunk } from "redux-thunk";
 import { useDispatch } from "react-redux";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import authSlice, { setLogout } from "./auth.slice";
-import { Axios } from "../../services/axios";
+import { Axios } from "../../services/axios"
 import storage from "redux-persist/lib/storage";
 import projectsSlice from "./projects.slice";
 const persistConfig = {
