@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LoginUser, getUser, registerUser } from "../actions/auth.actions";
+import {
+  LoginUser,
+  getUser,
+  registerUser,
+  validateToken,
+} from "../actions/auth.actions";
 import { handlePending } from "../actions/base.actions";
 
 export interface UserLogin {
@@ -90,28 +95,28 @@ const authSlice = createSlice({
         state.loading = false;
         state.isLogin = false;
         state.alreadyEmail = false;
+      })
+      //   .addCase(validateEmail.pending, handlePending)
+      //   .addCase(validateEmail.fulfilled, (state) => {
+      //     state.loading = false;
+      //     state.token = null;
+      //     state.alreadyEmail = true;
+      //   })
+      //   .addCase(validateEmail.rejected, (state) => {
+      //     state.loading = false;
+      //     state.alreadyEmail = false;
+      //   })
+      .addCase(validateToken.pending, handlePending)
+      .addCase(validateToken.fulfilled, (state, { payload }: any) => {
+        state.loading = false;
+        state.token = payload.accessToken;
+      })
+      .addCase(validateToken.rejected, (state) => {
+        state.loading = false;
+        state.isLogin = false;
+        state.token = null
+        state.user = null
       });
-    //   .addCase(validateEmail.pending, handlePending)
-    //   .addCase(validateEmail.fulfilled, (state) => {
-    //     state.loading = false;
-    //     state.token = null;
-    //     state.alreadyEmail = true;
-    //   })
-    //   .addCase(validateEmail.rejected, (state) => {
-    //     state.loading = false;
-    //     state.alreadyEmail = false;
-    //   })
-    //   .addCase(validateToken.pending, handlePending)
-    //   .addCase(validateToken.fulfilled, (state, { payload }: any) => {
-    //     state.loading = false;
-    //     state.token = payload.accessToken;
-    //     state.alreadyEmail = true;
-    //   })
-    //   .addCase(validateToken.rejected, (state) => {
-    //     state.loading = false;
-    //     state.isLogin = false;
-    //     state.alreadyEmail = false;
-    //   })
     //   .addCase(updateUser.pending, handlePending)
     //   .addCase(updateUser.fulfilled, (state, { payload }: any) => {
     //     state.updateOneUser = payload;
