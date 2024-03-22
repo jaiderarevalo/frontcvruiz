@@ -64,16 +64,17 @@ console.log("soy response",response.data);
   }
 );
 
-export const verifyToken = createAsyncThunk(
-  "auth/verifyToken",
+export const validateToken = createAsyncThunk(
+  "auth/validateToken",
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await Api.post("/auth/validate-token", {
         token,
-      });
+      })
+      
       return response.data;
     } catch (e: any) {
-      return rejectWithValue(e.response.data.message);
+      return rejectWithValue(e.response.data);
     }
   }
 );

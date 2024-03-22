@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAppDispatch } from "@/Store/Slices";
-import { verifyToken } from "@/Store/actions/auth.actions";
 import { setLogin } from "@/Store/Slices/auth.slice";
+import { validateToken } from "@/Store/actions/auth.actions";
 
 type Props = {
   children: React.ReactElement;
@@ -12,8 +12,8 @@ const AuthVerify = ({ children }: Props) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    dispatch(verifyToken(token as any)).then((response) => {
-      if (response.type === "auth/verifyToken/fulfilled") {
+    dispatch(validateToken(token as any)).then((response) => {
+      if (response.type === "auth/validateToken/fulfilled") {
         dispatch(setLogin(response.payload));
       }
     });
